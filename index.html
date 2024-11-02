@@ -18,18 +18,18 @@
       justify-content: center;
       align-items: flex-start;
       background-color: black;
-      overflow-x: hidden; /* Yatay taşmayı önlemek için */
+      overflow-x: hidden;
     }
 
     .container {
-      width: 90%; /* Genişliği yüzde olarak ayarlayarak uyum sağlar */
+      width: 90%;
       max-width: 500px;
       background-color: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       padding-bottom: 20px;
       padding-top: 20px;
-      margin: 20px auto; /* Merkezi yerleştirme */
+      margin: 20px auto;
     }
     .info-bar {
       display: flex;
@@ -44,14 +44,10 @@
       margin-bottom: 20px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
-      transform-origin: center;
-      width: fit-content;
-      margin: 0 auto;
     }
     .alphabet {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); /* Mobil uyumluluk */
+      grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
       gap: 5px;
       justify-content: center;
       font-size: 1.2rem;
@@ -80,7 +76,7 @@
       color: darkblue;
       font-weight: bold;
       margin-bottom: 10px;
-      padding: 0 10px; /* Küçük ekranlarda kaymayı önlemek için boşluk */
+      padding: 0 10px;
     }
   </style>
 </head>
@@ -166,9 +162,9 @@
       const wordDisplay = document.getElementById("wordDisplay");
       wordDisplay.textContent = correctGuesses.join(' ');
 
-      // Uzun kelimelerde font boyutunu küçültmek için ölçeklendirme
-      const scale = selectedWord.length > 10 ? 0.8 : 1;
-      wordDisplay.style.transform = `scale(${scale})`;
+      // Yazı boyutunu dinamik olarak ayarlayın
+      const fontSize = selectedWord.length > 10 ? '1.5rem' : '2rem';
+      wordDisplay.style.fontSize = fontSize;
     }
 
     function disableAllButtons() {
