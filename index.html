@@ -44,7 +44,10 @@
       margin-bottom: 20px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; /* Taşan metni kesmek için */
+      text-overflow: ellipsis;
+      transform-origin: center;
+      width: fit-content;
+      margin: 0 auto;
     }
     .alphabet {
       display: grid;
@@ -163,9 +166,9 @@
       const wordDisplay = document.getElementById("wordDisplay");
       wordDisplay.textContent = correctGuesses.join(' ');
 
-      // Uzun kelimelerde font boyutunu küçült
-      const fontSize = selectedWord.length > 10 ? '1.5rem' : '2rem';
-      wordDisplay.style.fontSize = fontSize;
+      // Uzun kelimelerde font boyutunu küçültmek için ölçeklendirme
+      const scale = selectedWord.length > 10 ? 0.8 : 1;
+      wordDisplay.style.transform = `scale(${scale})`;
     }
 
     function disableAllButtons() {
