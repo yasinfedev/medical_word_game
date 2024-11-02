@@ -38,7 +38,7 @@
       padding: 10px 20px;
     }
     .word-display {
-      font-size: 2rem;
+      font-size: calc(2rem - 0.1rem * var(--word-length)); /* Dinamik font boyutu */
       letter-spacing: 8px;
       text-align: center;
       margin-bottom: 20px;
@@ -121,6 +121,7 @@
       selectedWord = randomWordObj.word;
       correctGuesses = Array(selectedWord.length).fill('_');
       wrongGuesses = 0;
+      document.documentElement.style.setProperty('--word-length', selectedWord.length); // Dinamik font boyutu için kelime uzunluğunu ayarla
       document.getElementById("status").textContent = '';
       document.getElementById("remainingAttempts").textContent = `Kalan Hak: ${maxAttempts}`;
       document.getElementById("hint").textContent = `İpucu: ${randomWordObj.hint}`;
@@ -174,10 +175,6 @@
     function updateWordDisplay() {
       const wordDisplay = document.getElementById("wordDisplay");
       wordDisplay.textContent = correctGuesses.join(' ');
-
-      const screenWidth = window.innerWidth;
-      const fontSize = screenWidth / (selectedWord.length * 1.5);
-      wordDisplay.style.fontSize = `${fontSize}px`;
     }
 
     function disableAllButtons() {
