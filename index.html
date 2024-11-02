@@ -29,11 +29,19 @@
       padding-bottom: 20px;
       padding-top: 20px;
     }
+    .info-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+    }
     .word-display {
       font-size: 2rem;
       letter-spacing: 10px;
       text-align: center;
       margin-bottom: 20px;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .alphabet {
       display: grid;
@@ -59,33 +67,49 @@
       font-size: 1.5rem;
       margin-top: 20px;
     }
+    .hint {
+      text-align: center;
+      font-size: 1.1rem;
+      color: darkblue;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="text-center">
-      <h4>Adam Asmaca Oyunu</h4>
+    <div class="info-bar">
+      <div id="remainingAttempts">Kalan Hak: 6</div>
+      <button id="resetButton" class="btn btn-primary" onclick="resetGame()">Yeni Oyun</button>
     </div>
+    <div id="hint" class="hint">İpucu: </div>
     <div id="wordDisplay" class="word-display"></div>
     <div class="alphabet" id="alphabet"></div>
     <div class="status" id="status"></div>
-    <div class="text-center">
-      <button id="resetButton" class="btn btn-primary mt-3" onclick="resetGame()">Yeni Oyun</button>
-    </div>
   </div>
 
   <script>
-    const words = ["TAŞIKARDİ", "BRADİKARDİ", "HİPERTANSİYON", "ANAFİLAKSİ", "MİYOKARD"];
+    const words = [
+      { word: "TAŞIKARDİ", hint: "Hızlı kalp atışı" },
+      { word: "BRADİKARDİ", hint: "Yavaş kalp atışı" },
+      { word: "HİPERTANSİYON", hint: "Yüksek kan basıncı" },
+      { word: "ANAFİLAKSİ", hint: "Şiddetli alerjik reaksiyon" },
+      { word: "MİYOKARD", hint: "Kalp kası" }
+    ];
     let selectedWord = '';
     let correctGuesses = [];
     let wrongGuesses = 0;
+    const maxAttempts = 6;
 
     function initializeGame() {
-      selectedWord = words[Math.floor(Math.random() * words.length)];
+      const randomWordObj = words[Math.floor(Math.random() * words.length)];
+      selectedWord = randomWordObj.word;
       correctGuesses = Array(selectedWord.length).fill('_');
       wrongGuesses = 0;
       document.getElementById("status").textContent = '';
-      document.getElementById("wordDisplay").textContent = correctGuesses.join(' ');
+      document.getElementById("remainingAttempts").textContent = `Kalan Hak: ${maxAttempts}`;
+      document.getElementById("hint").textContent = `İpucu: ${randomWordObj.hint}`;
+      updateWordDisplay();
       createAlphabet();
     }
 
@@ -113,7 +137,7 @@
             correctGuesses[index] = letter;
           }
         });
-        document.getElementById("wordDisplay").textContent = correctGuesses.join(' ');
+        updateWordDisplay();
 
         if (!correctGuesses.includes('_')) {
           document.getElementById("status").textContent = 'Tebrikler, kazandınız!';
@@ -121,11 +145,22 @@
         }
       } else {
         wrongGuesses++;
-        if (wrongGuesses >= 6) {
+        document.getElementById("remainingAttempts").textContent = `Kalan Hak: ${maxAttempts - wrongGuesses}`;
+
+        if (wrongGuesses >= maxAttempts) {
           document.getElementById("status").textContent = 'Kaybettiniz. Kelime: ' + selectedWord;
           disableAllButtons();
         }
       }
+    }
+
+    function updateWordDisplay() {
+      const wordDisplay = document.getElementById("wordDisplay");
+      wordDisplay.textContent = correctGuesses.join(' ');
+
+      // Uzun kelimelerde font boyutunu küçült
+      const fontSize = selectedWord.length > 10 ? '1.5rem' : '2rem';
+      wordDisplay.style.fontSize = fontSize;
     }
 
     function disableAllButtons() {
