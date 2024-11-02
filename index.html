@@ -44,6 +44,9 @@
       margin-bottom: 20px;
       white-space: nowrap;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      width: 100%;
     }
     .alphabet {
       display: grid;
@@ -162,9 +165,10 @@
       const wordDisplay = document.getElementById("wordDisplay");
       wordDisplay.textContent = correctGuesses.join(' ');
 
-      // Yazı boyutunu dinamik olarak ayarlayın
-      const fontSize = selectedWord.length > 10 ? '1.5rem' : '2rem';
-      wordDisplay.style.fontSize = fontSize;
+      // Dinamik olarak yazı boyutunu ayarla
+      const screenWidth = window.innerWidth;
+      const fontSize = screenWidth / (selectedWord.length * 1.5);
+      wordDisplay.style.fontSize = `${fontSize}px`;
     }
 
     function disableAllButtons() {
