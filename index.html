@@ -37,16 +37,20 @@
       font-size: 1.2rem;
       padding: 10px 20px;
     }
-    .word-display {
-      font-size: calc(2rem - 0.1rem * var(--word-length)); /* Dinamik font boyutu */
-      letter-spacing: 8px;
+    .word-display-container {
+      width: 100%;
       text-align: center;
       margin-bottom: 20px;
-      white-space: nowrap;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      width: 100%;
+    }
+    .word-display {
+      font-size: 2rem;
+      letter-spacing: 8px;
+      background-color: #d1ecf1;
+      color: #0c5460;
+      padding: 10px;
+      border-radius: 5px;
+      display: inline-block;
+      word-wrap: break-word; /* Taşmayı önlemek için */
     }
     .alphabet {
       display: grid;
@@ -98,7 +102,9 @@
       <button id="resetButton" class="btn btn-primary" onclick="resetGame()">Yeni Oyun</button>
     </div>
     <div id="hint" class="hint">İpucu: </div>
-    <div id="wordDisplay" class="word-display"></div>
+    <div class="word-display-container">
+      <div id="wordDisplay" class="word-display"></div>
+    </div>
     <div class="alphabet" id="alphabet"></div>
     <div class="status" id="status"></div>
   </div>
@@ -121,7 +127,6 @@
       selectedWord = randomWordObj.word;
       correctGuesses = Array(selectedWord.length).fill('_');
       wrongGuesses = 0;
-      document.documentElement.style.setProperty('--word-length', selectedWord.length); // Dinamik font boyutu için kelime uzunluğunu ayarla
       document.getElementById("status").textContent = '';
       document.getElementById("remainingAttempts").textContent = `Kalan Hak: ${maxAttempts}`;
       document.getElementById("hint").textContent = `İpucu: ${randomWordObj.hint}`;
