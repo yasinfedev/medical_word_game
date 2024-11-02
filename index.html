@@ -63,10 +63,18 @@
       border: none;
       border-radius: 5px;
       font-size: 1rem;
+      color: black;
     }
     .letter-btn.disabled {
-      background-color: grey;
       cursor: not-allowed;
+    }
+    .letter-btn.correct {
+      background-color: green;
+      color: white;
+    }
+    .letter-btn.wrong {
+      background-color: red;
+      color: white;
     }
     .status {
       text-align: center;
@@ -139,6 +147,7 @@
       button.disabled = true;
 
       if (selectedWord.includes(letter)) {
+        button.classList.add("correct"); // Doğru seçimler için yeşil arka plan ve beyaz yazı
         selectedWord.split('').forEach((char, index) => {
           if (char === letter) {
             correctGuesses[index] = letter;
@@ -151,6 +160,7 @@
           disableAllButtons();
         }
       } else {
+        button.classList.add("wrong"); // Yanlış seçimler için kırmızı arka plan ve beyaz yazı
         wrongGuesses++;
         document.getElementById("remainingAttempts").textContent = `Kalan Hak: ${maxAttempts - wrongGuesses}`;
 
@@ -165,7 +175,6 @@
       const wordDisplay = document.getElementById("wordDisplay");
       wordDisplay.textContent = correctGuesses.join(' ');
 
-      // Dinamik olarak yazı boyutunu ayarla
       const screenWidth = window.innerWidth;
       const fontSize = screenWidth / (selectedWord.length * 1.5);
       wordDisplay.style.fontSize = `${fontSize}px`;
