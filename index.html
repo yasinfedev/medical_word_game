@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <title>Adam Asmaca Oyunu</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-color: black;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding-bottom: 20px;
+      padding-top: 20px;
+    }
+    .word-display {
+      font-size: 2rem;
+      letter-spacing: 10px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .alphabet {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .letter-btn {
+      cursor: pointer;
+      padding: 10px;
+      background-color: lightgrey;
+      border: none;
+      border-radius: 5px;
+    }
+    .letter-btn.disabled {
+      background-color: grey;
+      cursor: not-allowed;
+    }
+    .status {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="text-center">
+      <h4>Adam Asmaca Oyunu</h4>
+    </div>
+    <div id="wordDisplay" class="word-display"></div>
+    <div class="alphabet" id="alphabet"></div>
+    <div class="status" id="status"></div>
+    <div class="text-center">
+      <button id="resetButton" class="btn btn-primary mt-3" onclick="resetGame()">Yeni Oyun</button>
+    </div>
+  </div>
+
+  <script>
+    const words = ["TAŞIKARDİ", "BRADİKARDİ", "HİPERTANSİYON", "ANAFİLAKSİ", "MİYOKARD"];
+    let selectedWord = '';
+    let correctGuesses = [];
+    let wrongGuesses = 0;
+
+    function initializeGame() {
+      selectedWord = words[Math.floor(Math.random() * words.length)];
+      correctGuesses = Array(selectedWord.length).fill('_');
+      wrongGuesses = 0;
+      document.getElementById("status").textContent = '';
+      document.getElementById("wordDisplay").textContent = correctGuesses.join(' ');
+      createAlphabet();
+    }
+
+    function createAlphabet() {
+      const alphabetDiv = document.getElementById("alphabet");
+      alphabetDiv.innerHTML = ''; 
+      const letters = "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ".split('');
+      
+      letters.forEach(letter => {
+        const button = document.createElement("button");
+        button.classList.add("letter-btn");
+        button.textContent = letter;
+        button.addEventListener("click", () => makeGuess(letter, button));
+        alphabetDiv.appendChild(button);
+      });
+    }
+
+    function makeGuess(letter, button) {
+      button.classList.add("disabled");
+      button.disabled = true;
+
+      if (selectedWord.includes(letter)) {
+        selectedWord.split('').forEach((char, index) => {
+          if (char === letter) {
+            correctGuesses[index] = letter;
+          }
+        });
+        document.getElementById("wordDisplay").textContent = correctGuesses.join(' ');
+
+        if (!correctGuesses.includes('_')) {
+          document.getElementById("status").textContent = 'Tebrikler, kazandınız!';
+          disableAllButtons();
+        }
+      } else {
+        wrongGuesses++;
+        if (wrongGuesses >= 6) {
+          document.getElementById("status").textContent = 'Kaybettiniz. Kelime: ' + selectedWord;
+          disableAllButtons();
+        }
+      }
+    }
+
+    function disableAllButtons() {
+      const buttons = document.querySelectorAll(".letter-btn");
+      buttons.forEach(button => {
+        button.disabled = true;
+        button.classList.add("disabled");
+      });
+    }
+
+    function resetGame() {
+      initializeGame();
+    }
+
+    initializeGame();
+  </script>
+</body>
+</html>
